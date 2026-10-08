@@ -1,0 +1,9 @@
+services:
+  webatm-integrated:
+    image: ghcr.io/amvlab/webatm-integrated:latest
+    container_name: spc-baghdad-acc-lab
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    volumes:
+      - ../../scenario/SPC:/home/webatm/bluesky/scenario/SPC:ro
