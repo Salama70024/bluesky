@@ -328,3 +328,20 @@ Current preferred interaction conventions for the prototype:
 - measurement line should update visually and report NM + bearing; aircraft-to-aircraft may additionally show vertical difference, but this is display-only until operational semantics are verified.
 
 These conventions are prototype design decisions, not claims about certified/operational TopSky behavior.
+
+
+## 15. HMI reference interactions from controller screenshots — 2026-10-08
+
+New controller-screen references clarify the intended HMI interaction model for the prototype. These are visual/interaction targets derived from screenshots and user observation; field semantics not yet verified in manuals must remain provisional.
+
+Observed/desired behavior:
+- Aircraft track symbol is connected to a compact multi-line data block by a leader line.
+- Primary label text is cyan/white with selected/clearance-related fields using contrasting amber/orange in the reference screenshots.
+- Left mouse drag on the data block moves the label while the leader line remains anchored to the track.
+- Right-click on the aircraft/data block opens an aircraft action context menu.
+- Right-click specifically on the level/altitude field opens a dedicated flight-level selector instead of the generic context menu.
+- Flight-level selector uses flight-level hundreds (e.g. 100 = FL100/10,000 ft, 110 = FL110/11,000 ft) in 10-FL / 1,000-ft increments and should support wheel/keyboard navigation.
+- Range/bearing/conflict-prediction tool displays a compact bordered result box visually similar to the reference, with fields labelled `d`, `b`, and `Sep`; exact operational semantics of all values remain to be verified before production logic.
+- Measurement line can connect aircraft-to-aircraft or aircraft-to-map-point depending on the second selection.
+
+Implementation rule: prototype these interactions first in `prototypes/controller-hmi/`; do not wire flight-level selection to BlueSky or claim operational clearance semantics until the cleared-state model and source verification are complete.
