@@ -264,3 +264,40 @@ After every material implementation milestone, update this file with:
 - next recommended step
 
 Future project conversations should read this state file before making major recommendations or continuing implementation.
+
+
+## 13. HMI prototyping decision — 2026-10-08
+
+Before replacing the generic WebATM controller UI with a production-like Baghdad ACC HMI, build an **isolated Controller HMI Lab** inside the WebATM working copy.
+
+Purpose:
+- enable fast visual/interaction iteration without touching the working simulator path;
+- use the current reference screenshots as visual targets;
+- validate controller interaction patterns before integration;
+- keep the production controller workspace stable while HMI ideas change rapidly.
+
+Recommended prototype location in the WebATM repo:
+- `prototypes/controller-hmi/`
+
+Prototype characteristics:
+- standalone HTML/CSS/JavaScript (or TypeScript if trivial to wire), served locally;
+- no BlueSky dependency initially;
+- no Docker rebuild required for each visual change;
+- reuse the real Iraq reference GeoJSON files from `WebATM/static/map/` rather than duplicating aviation data;
+- mock aircraft fixtures for deterministic visual states;
+- fullscreen browser presentation as the target usage mode.
+
+First HMI lab scope:
+- radar-first fullscreen shell;
+- top menu bar inspired by the current Baghdad controller system references;
+- dropdown menu shell only, not full function implementation;
+- aircraft track symbol;
+- controller data block / label;
+- draggable label with leader line;
+- selection states;
+- range/bearing/separation measurement graphic;
+- mock traffic states for normal/selected/owned/handover/warning/conflict/emergency.
+
+The lab is a design/interaction sandbox, not a second application. Once a component is accepted, port/reuse its styling and behavior in the real `?workspace=controller` implementation.
+
+Figma may be used only as a supporting visual/specification tool; interactive behavior should be validated in the HMI Lab.
