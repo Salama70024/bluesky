@@ -301,3 +301,30 @@ First HMI lab scope:
 The lab is a design/interaction sandbox, not a second application. Once a component is accepted, port/reuse its styling and behavior in the real `?workspace=controller` implementation.
 
 Figma may be used only as a supporting visual/specification tool; interactive behavior should be validated in the HMI Lab.
+
+
+## 14. Controller HMI iteration workflow — 2026-10-08
+
+The isolated HMI prototype is now running under `prototypes/controller-hmi/` and is the preferred place for rapid controller-interface experiments.
+
+### Working method
+Use ChatGPT as the design/specification/acceptance layer and Cursor as the implementation agent:
+1. User describes desired controller behavior here, preferably with screenshots.
+2. Convert the request into a small interaction contract: trigger, state change, visual response, persistence/reset behavior, and acceptance criteria.
+3. Send one tightly scoped implementation task to Cursor in `webatm-spc`.
+4. User refreshes the standalone prototype immediately; no Docker rebuild required.
+5. Review screenshot/behavior here and iterate.
+6. Only accepted HMI behaviors are later ported into the real `?workspace=controller`.
+
+Avoid large visual rewrites or direct edits to production controller code while the interaction design is still changing.
+
+### Immediate HMI behavior target
+Current preferred interaction conventions for the prototype:
+- normal aircraft/data-block text: white (with secondary/clearance fields allowed to use configured accent colors);
+- right-click aircraft/label: select the aircraft and change its selected-state presentation to green/highlighted;
+- middle-click aircraft: start range/bearing measurement anchored to that aircraft;
+- second middle-click on another aircraft/its label: complete aircraft-to-aircraft measurement;
+- second middle-click on empty map space: complete aircraft-to-point measurement;
+- measurement line should update visually and report NM + bearing; aircraft-to-aircraft may additionally show vertical difference, but this is display-only until operational semantics are verified.
+
+These conventions are prototype design decisions, not claims about certified/operational TopSky behavior.
