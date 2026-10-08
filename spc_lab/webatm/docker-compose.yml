@@ -5,5 +5,3 @@ services:
     restart: unless-stopped
     ports:
       - "8082:8082"
-    volumes:
-      - ../../scenario/SPC:/home/webatm/bluesky/scenario/SPC:ro
