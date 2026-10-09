@@ -396,3 +396,12 @@ Committed prototype files only:
 - `prototypes/controller-hmi/styles.css`
 
 The existing production WebATM modifications remain outside this prototype commit. The HMI prototype remains the rapid-iteration sandbox for controller display behavior before accepted components are ported into the real controller workspace.
+
+
+## 19. Track history, speed vector and leader-line geometry — 2026-10-09
+
+Additional controller HMI reference behavior:
+- Show a short sequence of history dots behind each aircraft track symbol to indicate recent past positions. In the isolated prototype these may be synthetic from current track/heading; production must use recorded surveillance/track history samples.
+- Add a short forward speed/vector line from the aircraft track symbol. It is toggled from the aircraft right-click context menu via the `Speed` item. Prototype behavior is visual only until the operational vector time/scale is verified.
+- Track-to-label leader line must terminate very close to both objects: from the nearest edge of the track symbol to the nearest edge of the data-block rectangle, with only a minimal 0–2 px visual gap. It must not start from the track center or leave a large blank gap at either end.
+- Leader, history dots, and speed vector should remain separate visual primitives and preserve data-block drag behavior.
