@@ -345,3 +345,19 @@ Observed/desired behavior:
 - Measurement line can connect aircraft-to-aircraft or aircraft-to-map-point depending on the second selection.
 
 Implementation rule: prototype these interactions first in `prototypes/controller-hmi/`; do not wire flight-level selection to BlueSky or claim operational clearance semantics until the cleared-state model and source verification are complete.
+
+
+## 16. HMI prototype interaction corrections — 2026-10-09
+
+Controller HMI prototype behavior was refined from direct user observation of the Baghdad ACC interface.
+
+Confirmed prototype targets:
+- Radar/map background should be a **uniform neutral dark gray** inside and outside the aviation boundary; do not tint the FIR interior differently.
+- Hide/remove the prototype geographic/country-boundary context for now. Its geometry is not trusted for controller-HMI fidelity and is visually distracting. Use the aviation reference map layers as the displayed reference until geographic context is deliberately reintroduced with verified geometry.
+- Range/bearing measurement starts with **middle click**.
+- Measurement is **confirmed/completed with left click**, not a second middle click.
+- If the confirmation target is another aircraft or its data block, complete aircraft-to-aircraft measurement; otherwise complete aircraft-to-map-point measurement.
+- The generated measurement information box is **draggable** after creation; moving the box must not move the measurement endpoints.
+- Keep the result box visually compact and ATC-like. Exact collision/separation-prediction semantics remain provisional until verified from system documentation or controller explanation.
+
+These are HMI prototype decisions only and must be implemented first under `prototypes/controller-hmi/` without modifying production WebATM/BlueSky behavior.
