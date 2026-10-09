@@ -413,3 +413,17 @@ Further controller-HMI prototype refinements from user observation:
 - Reduce history-dot spacing/overall trail length; keep the same short recent-history concept but make the dots more compact behind the track.
 - Right-click selection should highlight the **entire aircraft data block** in green, not only the track/leader. For safety-priority indications, STCA should remain red unless later reference evidence shows otherwise.
 - Add a top-menu item named **Flight Data** positioned between **ASD Bg** and **Flight Lists**. The menu can remain a placeholder shell until its operational contents are documented.
+
+
+## 21. Handover / sector ownership HMI behavior — 2026-10-09
+
+Observed controller HMI behavior from user-provided operational screenshots/experience:
+- Handover is initiated from the aircraft right-click context menu by choosing the target sector/controller position.
+- During a pending handover, the aircraft data block flashes between gray and white until the transfer is accepted or cancelled/accepted again through the context menu.
+- The `Accept` action is available through the aircraft right-click context menu; acceptance may be performed from either the initiating or receiving position according to the observed workflow.
+- Aircraft controlled by another sector are displayed in blue, including both the data block and its leader line.
+- These are prototype HMI/coordination-state observations and are not yet backed by an authoritative LEADER/TopSky handover-state specification. Do not encode operational transfer rules beyond the observed UI behavior until source verification is available.
+- Iraq AIP confirms the current ACC North / ACC South control organization and published control channels, but not the specific label colors/flashing behavior used by the HMI.
+
+Recommended prototype state model:
+`owned_local`, `handover_pending_out`, `handover_pending_in`, `owned_other`, with explicit target/source sector identifiers and a separate `selected` UI state.
