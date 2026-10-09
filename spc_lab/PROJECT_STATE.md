@@ -427,3 +427,48 @@ Observed controller HMI behavior from user-provided operational screenshots/expe
 
 Recommended prototype state model:
 `owned_local`, `handover_pending_out`, `handover_pending_in`, `owned_other`, with explicit target/source sector identifiers and a separate `selected` UI state.
+
+
+## 22. Thales System source library strategy — 2026-10-09
+
+A Google Drive folder named **Thales System** is available as the long-form historical/product reference library for the ATC simulator. It contains Baghdad-specific Thales documentation, general TopSky-ATC operational handbooks, and training-course modules.
+
+### Keep in Google Drive as the complete archive/library
+The full folder should remain in Drive. It includes, among others:
+- Reference_Baghdad-SSS_20170905_DR.pdf — TopSky-ATC Baghdad System Segment Specification, Rev A, Nov 2014, 290 pages.
+- CP OH (Rev K).pdf — Controller Position Operational Handbook, Rev K, Nov 2013, 290 pages.
+- DATAGEN OH (Rev J).pdf.
+- Baghdad DATAPREP OH (Rev -).pdf.
+- Baghdad LEADER OH (Rev -).pdf.
+- MAPGEN / MOSAICGEN / STRIPGEN / RECREP / TSUP handbooks.
+- TopSky operational-course modules including HMI Presentation, Controller Keyboard, HMI Control, Radar Tracks, FPL Management, Setup/Operational Supervision, Planner Functions, Safety Nets, Recording/Replay, Simulation, Leader Position, and Pilot Position.
+
+### Project-source curation rule
+Keep the Drive folder as the full archive, but attach a curated subset to the ATC Simulator project for high-frequency design/implementation work and durable cross-conversation access.
+
+Highest-priority missing project sources:
+1. Reference_Baghdad-SSS_20170905_DR.pdf
+2. CP OH (Rev K).pdf
+3. Mod03_HMI Presentation
+4. Mod04_Controller Keyboard
+5. Mod05_HMI Control
+6. Mod06_Radar tracks
+7. Mod07_FPL management
+8. Mod12_Safety Nets Alerts
+9. Mod18_Recordingreplay
+10. Mod20_Simulation
+11. Mod21_Leader position
+12. Mod22_Pilot position
+
+Second-tier sources for later phases:
+- DATAGEN OH (Rev J)
+- Baghdad DATAPREP OH (Rev -)
+- Mod09 Setup and Operational Supervision
+- Mod10 Planner functions
+- Mod13 AGDL
+- remaining course modules.
+
+Already present as project sources and therefore do not need duplicate upload merely for access: Baghdad LEADER OH, MAPGEN, MOSAICGEN, STRIPGEN, RECREP, TSUP.
+
+### Scope/applicability caution
+These Thales materials are historical/product/configuration references (mainly 2013–2014 Baghdad delivery/product material). Use them to reproduce HMI/workflow/training behavior and understand system architecture, but not as current regulatory truth. Current Iraqi AIP/AIRAC and applicable ICAO/local instructions govern current operational data and requirements.
