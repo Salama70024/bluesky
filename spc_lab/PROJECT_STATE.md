@@ -361,3 +361,21 @@ Confirmed prototype targets:
 - Keep the result box visually compact and ATC-like. Exact collision/separation-prediction semantics remain provisional until verified from system documentation or controller explanation.
 
 These are HMI prototype decisions only and must be implemented first under `prototypes/controller-hmi/` without modifying production WebATM/BlueSky behavior.
+
+
+## 17. Data-block DAPS and STCA visual reference — 2026-10-09
+
+New controller screenshots and user observation define the next HMI prototype target.
+
+### Data-block visual model
+- Normal/primary label information is white in the operational reference.
+- Orange fields represent Mode-S-derived supplementary information in the observed configuration.
+- A DAPS display toggle controls whether the supplementary orange Mode-S fields are expanded/shown.
+- When DAPS is off, primary white fields remain and `SA` remains visible in orange; user identifies `SA` as the aircraft-selected altitude.
+- Keep each field as an independently addressable DOM/HMI field rather than a preformatted text blob.
+
+### STCA visual indication
+- When an STCA condition exists, the reference shows a red `*STCA` alert above the affected aircraft label.
+- For the isolated HMI prototype, implement the visual/state behavior only. Do not assign an operational distance/time threshold or claim certified STCA logic until the safety-net model is specified and verified.
+
+AIP evidence confirms Mode-S capability exists in Baghdad FIR surveillance infrastructure, but the specific `DAPS` UI control and exact label-field mapping above are based on controller screenshots/user observation and remain HMI configuration knowledge rather than an AIP requirement.
