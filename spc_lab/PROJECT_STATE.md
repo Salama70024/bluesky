@@ -405,3 +405,11 @@ Additional controller HMI reference behavior:
 - Add a short forward speed/vector line from the aircraft track symbol. It is toggled from the aircraft right-click context menu via the `Speed` item. Prototype behavior is visual only until the operational vector time/scale is verified.
 - Track-to-label leader line must terminate very close to both objects: from the nearest edge of the track symbol to the nearest edge of the data-block rectangle, with only a minimal 0–2 px visual gap. It must not start from the track center or leave a large blank gap at either end.
 - Leader, history dots, and speed vector should remain separate visual primitives and preserve data-block drag behavior.
+
+
+## 20. Selected-track color, history spacing and Flight Data menu — 2026-10-09
+
+Further controller-HMI prototype refinements from user observation:
+- Reduce history-dot spacing/overall trail length; keep the same short recent-history concept but make the dots more compact behind the track.
+- Right-click selection should highlight the **entire aircraft data block** in green, not only the track/leader. For safety-priority indications, STCA should remain red unless later reference evidence shows otherwise.
+- Add a top-menu item named **Flight Data** positioned between **ASD Bg** and **Flight Lists**. The menu can remain a placeholder shell until its operational contents are documented.
