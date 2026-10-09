@@ -379,3 +379,20 @@ New controller screenshots and user observation define the next HMI prototype ta
 - For the isolated HMI prototype, implement the visual/state behavior only. Do not assign an operational distance/time threshold or claim certified STCA logic until the safety-net model is specified and verified.
 
 AIP evidence confirms Mode-S capability exists in Baghdad FIR surveillance infrastructure, but the specific `DAPS` UI control and exact label-field mapping above are based on controller screenshots/user observation and remain HMI configuration knowledge rather than an AIP requirement.
+
+
+## 18. Controller HMI prototype baseline commit — 2026-10-09
+
+The isolated Baghdad ACC controller HMI prototype was committed locally in the WebATM working copy on branch:
+
+- `prototype/controller-hmi-review`
+- local commit: `e80ca9c` — `Add Baghdad ACC controller HMI prototype`
+
+Committed prototype files only:
+- `prototypes/controller-hmi/README.md`
+- `prototypes/controller-hmi/app.js`
+- `prototypes/controller-hmi/index.html`
+- `prototypes/controller-hmi/mock-aircraft.json`
+- `prototypes/controller-hmi/styles.css`
+
+The existing production WebATM modifications remain outside this prototype commit. The HMI prototype remains the rapid-iteration sandbox for controller display behavior before accepted components are ported into the real controller workspace.
