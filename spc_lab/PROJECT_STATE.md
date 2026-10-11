@@ -568,3 +568,38 @@ Commit:
 - `40f6d33` — `Fix handover state and preserve HMI map aspect ratio`
 
 This commit fixes the handover pending/accept state flow and preserves the standalone SVG map aspect ratio across viewport sizes. It is the accepted HMI-02 baseline before starting HMI-03.
+
+
+## 27. HMI-03 Flight Data / Sector Inbound / Planning — 2026-10-11
+
+The isolated controller HMI prototype reached the **HMI-03** milestone on local WebATM branch:
+
+- `prototype/controller-hmi-flightdata`
+- commit `0b186ad` — `Add Flight Data and sector inbound HMI workflow`
+
+Prototype-only changes:
+- new `flight-data.js` domain/config module;
+- new `mock-flight-plans.json` with 14 deterministic FPLs;
+- explicit aircraft ↔ flight-plan correlation;
+- reusable configured flight-list windows for Incoming, Arrival, Departure, Active, Non-Active, FIR Entry and FIR Exit;
+- Sector Inbound List filtering/sorting and auto-open/auto-close behavior;
+- reusable Planning window accessible from Flight Data, Track Label Plan action, and flight-list double-click;
+- separate aircraft actual level from controller/FPL cleared level;
+- mapped handover ownership state to FPL substates HANDOVER_OUT / HANDOVER_IN / CONTROLLED;
+- controller viewpoint (ACC NORTH / ACC SOUTH) affects SIL/controller context without rewriting underlying aircraft/FPL data.
+
+Validation reported:
+- syntax checks passed;
+- SIL and Active-list logic passed;
+- browser smoke covered correlation, uncorrelated FPL, track-without-FPL, CFL vs AFL separation, Accept→CONTROLLED, SIL auto close/reopen;
+- no JavaScript errors except favicon 404.
+
+Deferred:
+- automatic FPL lifecycle;
+- FDP route/ETO processing;
+- OLDI/AIDC;
+- BlueSky command wiring;
+- real SIL sector definitions/look-ahead;
+- Flow/STATS/electronic strips.
+
+Recommended next milestone: stop expanding presentation-only prototype and perform a **controlled controller-to-simulation integration spike**. Define a small, explicit adapter contract between the accepted HMI state model and BlueSky for read-only aircraft truth first, then a minimal set of validated controller commands. Keep controller clearance state separate from aircraft truth and retain the prototype as the HMI reference baseline.
