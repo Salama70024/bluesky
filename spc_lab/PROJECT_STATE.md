@@ -519,3 +519,20 @@ Deferred/placeholders remain:
 - Centre/Sensor/Superv operational behavior.
 
 Recommended next milestone after visual acceptance of HMI-02: **HMI-03 Flight Data / Sector Inbound / Planning workflow**, still in the isolated prototype before BlueSky integration.
+
+
+## 24. HMI-02 corrections: handover timing/state and map aspect ratio — 2026-10-11
+
+Post-HMI-02 visual review identified two prototype defects:
+
+1. **Handover pending indication**
+   - Current flash cadence is too fast for the intended Baghdad controller HMI reference.
+   - Initiating handover to another sector must enter a real pending state and flash until explicit acceptance; it must not jump directly to `owned_other`.
+   - Proposed prototype cadence: configurable ~900 ms per phase (white/gray), subject to further controller validation.
+   - Completion via `Accept` transitions ownership and stops flashing. STCA remains red and higher priority.
+
+2. **Map aspect-ratio distortion**
+   - The standalone SVG prototype currently stretches the Iraq aviation geometry when viewport aspect ratio changes: wide windows make the map wider; narrow windows make it taller.
+   - Correct behavior is aspect-preserving fit: uniform X/Y scale, centered within the available radar viewport, with the same neutral radar background filling unused space.
+   - Use an SVG/viewBox or equivalent projection transform with `preserveAspectRatio` / uniform scale; do not scale longitude and latitude axes independently.
+   - This correction applies only to the isolated SVG HMI prototype. The production MapLibre Iraq map already uses geographic projection and should not be altered by this fix.
