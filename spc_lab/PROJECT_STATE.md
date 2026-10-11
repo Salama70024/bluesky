@@ -555,3 +555,16 @@ Corrections verified:
 Visual review note: preserving the full Iraq/FIR aspect ratio on a wide monitor naturally leaves unused lateral radar background. This is expected geometry, not distortion. Later controller-workspace view/scale policy should decide whether to show full FIR, a sector-centered default view, or a user-controlled radar scale; do not solve this by non-uniform stretching.
 
 Recommended action: commit this correction as the HMI-02 accepted baseline, then proceed to HMI-03 (Flight Data / Sector Inbound / Planning workflow) in the isolated prototype.
+
+
+## 26. HMI-02 accepted baseline commit — 2026-10-11
+
+The verified HMI-02 correction pass was committed locally in the WebATM working copy.
+
+Branch:
+- `prototype/controller-hmi-menus`
+
+Commit:
+- `40f6d33` — `Fix handover state and preserve HMI map aspect ratio`
+
+This commit fixes the handover pending/accept state flow and preserves the standalone SVG map aspect ratio across viewport sizes. It is the accepted HMI-02 baseline before starting HMI-03.
