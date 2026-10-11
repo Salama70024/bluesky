@@ -536,3 +536,22 @@ Post-HMI-02 visual review identified two prototype defects:
    - Correct behavior is aspect-preserving fit: uniform X/Y scale, centered within the available radar viewport, with the same neutral radar background filling unused space.
    - Use an SVG/viewBox or equivalent projection transform with `preserveAspectRatio` / uniform scale; do not scale longitude and latitude axes independently.
    - This correction applies only to the isolated SVG HMI prototype. The production MapLibre Iraq map already uses geographic projection and should not be altered by this fix.
+
+
+## 25. HMI-02 correction verified — 2026-10-11
+
+The isolated controller HMI prototype correction pass was verified locally (not yet committed at the time of this note).
+
+Corrections verified:
+- outgoing handover now remains in `handover_pending_out` until explicit `Accept`;
+- outgoing handover no longer auto-completes and is disabled for `owned_other` / incoming states;
+- handover flashing uses a slower configurable cadence: 900 ms white + 900 ms gray;
+- STCA remains red during handover flashing;
+- standalone SVG map no longer distorts with viewport aspect ratio;
+- map now uses a stable logical viewBox with uniform scaling and `preserveAspectRatio="xMidYMid meet"`;
+- aircraft logical coordinates remain stable across wide, square and portrait viewports;
+- production MapLibre map was not modified.
+
+Visual review note: preserving the full Iraq/FIR aspect ratio on a wide monitor naturally leaves unused lateral radar background. This is expected geometry, not distortion. Later controller-workspace view/scale policy should decide whether to show full FIR, a sector-centered default view, or a user-controlled radar scale; do not solve this by non-uniform stretching.
+
+Recommended action: commit this correction as the HMI-02 accepted baseline, then proceed to HMI-03 (Flight Data / Sector Inbound / Planning workflow) in the isolated prototype.
