@@ -472,3 +472,50 @@ Already present as project sources and therefore do not need duplicate upload me
 
 ### Scope/applicability caution
 These Thales materials are historical/product/configuration references (mainly 2013–2014 Baghdad delivery/product material). Use them to reproduce HMI/workflow/training behavior and understand system architecture, but not as current regulatory truth. Current Iraqi AIP/AIRAC and applicable ICAO/local instructions govern current operational data and requirements.
+
+
+## 23. HMI-02 menu/setup foundation — 2026-10-11
+
+The isolated controller HMI prototype reached the **HMI-02 menu/setup foundation** milestone in the local WebATM working copy.
+
+Local branch:
+- `prototype/controller-hmi-menus`
+
+Commit:
+- `f803f4fb2ba710e19d6be217328a633f4ab4e19f` — HMI-02 menu/setup foundation
+
+Prototype-only files changed:
+- `prototypes/controller-hmi/app.js`
+- `prototypes/controller-hmi/index.html`
+- `prototypes/controller-hmi/styles.css`
+- `prototypes/controller-hmi/mock-aircraft.json`
+- `prototypes/controller-hmi/README.md`
+
+Implemented:
+- data-driven menu configuration for top menu bar and aircraft/context/CFL menus;
+- full controller menu bar shell with Data Link configurable but hidden;
+- one-open dropdown behavior, click-outside/Escape close, disabled states and cascade menus;
+- separate Track Label and Track Symbol context menus;
+- dedicated CFL selector that updates controller-cleared level only, leaving actual level/SA unchanged;
+- reusable window manager;
+- Setup window with functional Track/Marker/Bright tabs and Centre/Sensor/Superv shells;
+- previous radar/HMI prototype behaviors preserved: draggable labels/leaders, measurement vectors, DAPS, STCA visual state, handover/ownership, history dots and speed vectors.
+
+Validated in browser:
+- top menus and nested menus;
+- CFL changes clearedLevel only;
+- aircraft context menus;
+- Setup immediate history changes;
+- DAPS behavior;
+- no JavaScript errors except an unrelated favicon 404.
+
+Deferred/placeholders remain:
+- SSR Find/zoom/filter/weather operational behavior;
+- DCT/Hold/AIREP and other operational commands;
+- CPDLC/AIDC/OLDI;
+- real STCA logic;
+- BlueSky wiring;
+- overlap-avoidance behavior;
+- Centre/Sensor/Superv operational behavior.
+
+Recommended next milestone after visual acceptance of HMI-02: **HMI-03 Flight Data / Sector Inbound / Planning workflow**, still in the isolated prototype before BlueSky integration.
