@@ -603,3 +603,54 @@ Deferred:
 - Flow/STATS/electronic strips.
 
 Recommended next milestone: stop expanding presentation-only prototype and perform a **controlled controller-to-simulation integration spike**. Define a small, explicit adapter contract between the accepted HMI state model and BlueSky for read-only aircraft truth first, then a minimal set of validated controller commands. Keep controller clearance state separate from aircraft truth and retain the prototype as the HMI reference baseline.
+
+
+## 28. Integration Spike 01 design — read-only BlueSky truth — 2026-10-12
+
+After HMI-03, the next phase is a controlled **read-only live integration**. Do not add more presentation-only HMI before validating the state architecture against live BlueSky traffic.
+
+### Chosen integration path
+Reuse WebATM's existing BlueSky data path rather than building a second backend:
+
+BlueSky → WebATM BlueSkyClient/ZMQ → BlueSkyProxy → Flask-Socket.IO → controller-HMI prototype adapter.
+
+The standalone prototype (served from repo root on port 8765) may connect to the already running WebATM Socket.IO endpoint (normally port 8082). WebATM currently allows cross-origin Socket.IO clients, so the spike should not require a duplicate ZMQ client or new proxy service.
+
+### Read-only contract
+Consume only:
+- `initial_data.traffic_data`
+- live `acdata`
+- optionally `siminfo` / connection status for diagnostics.
+
+Do **not** emit `command` from the prototype in this spike.
+
+Map BlueSky aircraft truth into a separate adapter model:
+- id/callsign
+- lat/lon
+- track
+- actual altitude
+- TAS (and GS/CAS if present)
+- vertical speed
+- aircraft type if present
+- conflict flag only as raw simulator truth/debug data, not as Baghdad STCA semantics.
+
+BlueSky WebATM wire units are SI: altitude metres, speed m/s, vertical speed m/s. Convert explicitly at the adapter boundary to the HMI display units (FL/ft, knots, ft/min).
+
+### State-separation rule
+Live BlueSky updates may change aircraft truth only. They must not overwrite:
+- controller `clearedLevel`;
+- local FlightPlanState;
+- handover/ownership state;
+- controller selection/UI state;
+- DAPS/Mode-S fields that are not present in the live feed.
+
+Correlate live aircraft to mock/prototype FPL only by explicit callsign/association. A live track without FPL remains valid; an FPL without live track remains valid. Never fabricate either side.
+
+### History
+In live mode, use received position samples for track history dots instead of synthetic heading-derived dots. Keep a small bounded per-aircraft history buffer. Synthetic history remains acceptable only in mock mode.
+
+### Fallback / testability
+Keep mock mode intact and selectable. Live-mode failure must not corrupt mock data. Provide visible source/connection state (MOCK / LIVE CONNECTING / LIVE / STALE / DISCONNECTED).
+
+### Success criteria
+Run the existing Baghdad scenario in BlueSky and verify that live aircraft move in the HMI prototype while local FPL/CFL/handover state remains stable and separate. No controller command path is enabled yet.
