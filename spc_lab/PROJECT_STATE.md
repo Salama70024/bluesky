@@ -776,3 +776,17 @@ WGS84 coordinates in GeoJSON lon/lat:
 Two sectors are specified under Baghdad APP, upper limit FL235, with different lower limits (Kirkuk 3000 ft AMSL or 1500 ft AGL; Baghdad 1800 ft AMSL or 1000 ft AGL, whichever higher). Both listed H24 in historical AIP. Do NOT apply this APP boundary to FL235–FL460 ACC NORTH/SOUTH control, or infer ownership via geography. Later 19 MAR 2026 Kirkuk TMA 1–9 pages are different sector/TMA geometry; do not replace the shared 2023 APP sector line without verifying applicable current material.
 
 Next requested change: add this **display-only optional APP sector divider** to isolated controller HMI prototype, with an independent toggle and provenance, sharing existing lon/lat projection and Radar Camera. Ensure it remains aligned on pan/zoom/resize and does not affect BlueSky read-only, ACC handover, or aircraft truth. Optional Baghdad↔Ali boundary deferred until independently verified and tested; don't extrapolate it from screenshot.
+
+
+## 35. Radar boundary visual convention — 2026-10-12
+
+After the isolated HMI prototype APP boundary implementation, Cursor reported commit `717d6026097857056d02f5cd2f15f1e6749c8694` on local `prototype/controller-hmi-live-truth`; added `kirkuk-baghdad-app-sectors.json`, app-layer/toggle, stylesheet tokens, regression coordinate/toggle checks, README; 12/12 regression reported passing. The yellow APP line was **only a temporary validation color**.
+
+**User-confirmed Baghdad controller HMI visual requirement:**
+- All sector divider lines use the same muted green/green-grey color as the map outer FIR boundary.
+- ACC North/South divider is a **solid** line.
+- APP sector dividers (e.g., Baghdad/Kirkuk and future Baghdad/Ali) use a **dashed** line.
+- Outer FIR boundary remains solid muted green.
+- Preserve published geographic coordinates and independent ACC/APP visibility, and avoid changes to BlueSky, camera, FPL, ownership/handover.
+
+Implement as shared visual design token (e.g., `--radar-boundary-color`) and distinct CSS stroke-dasharray for APP. For SVG camera zoom, preserve visually consistent stroke width/dash rhythm where appropriate (`vector-effect: non-scaling-stroke` after verifying it does not damage overlays). Re-run baseline 12 tests and camera zoom tests. No geographic or operational behavior changes.
