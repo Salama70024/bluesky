@@ -760,3 +760,19 @@ New screenshot at normal controller URL (no regression parameter) confirms the c
 Desired interaction: wheel-to-zoom around cursor, zoom in/out buttons, Fit FIR, sector-centered optional fit, background drag pan; prevent accidental map panning from left-dragging aircraft data-block labels; retain middle-click measurement and right-click menus; ensure consistent screen↔world coordinate conversion for accurate hit tests, leader lines and measurements after transformations, full-screen and resize. Avoid non-uniform stretching and keep operational aircraft data-block text legible at different map zoom levels (ideally constant screen pixel size). Do not require BlueSky writes or change existing Iraq GeoJSON. Add meaningful tests for wide/narrow screens, anchors, label drags, measurement, camera limits and two-controller sync (camera state should remain local to each controller).
 
 After camera zoom/pan is tested, add **display-only APP boundary overlays** from historical published AIP ENR 2.1-1 (23 FEB 2023) and review revised Kirkuk TMA publications in ENR 2.1-3..5 (19 MAR 2026) as separate scope; never conflate them with ACC North/South ownership, and no geographic automatic transfer.
+
+
+## 34. APP Kirkuk / Baghdad boundary deferred behind camera — 2026-10-12
+
+After the interactive SVG Radar Camera implementation (local WebATM prototype branch `prototype/controller-hmi-live-truth`, commit `1b7840efde52d5293e54a56b54a9e0c5ed392e48`), user screenshot confirms proper zoom/pan but **the historical Kirkuk↔Baghdad APP sector divider is not yet present**. This is expected from task scope: the camera prompt explicitly excluded APP boundaries. Do not mistake the existing WHITE ACC North/South divider for Kirkuk/Baghdad.
+
+Verified source: provided Iraq AIP compilation `462.pdf`, PDF page **47**, `ENR 2.1-1`, dated **23 FEB 2023**, AIRAC AIP AMDT 01/23. It defines the shared Kirkuk Sector/Baghdad Sector APP boundary west→east:
+`344655N 0411325E` → `343054N 0414705E` → `342936N 0453144E`.
+WGS84 coordinates in GeoJSON lon/lat:
+- [41.2236111111, 34.7819444444]
+- [41.7847222222, 34.515]
+- [45.5288888889, 34.4933333333]
+
+Two sectors are specified under Baghdad APP, upper limit FL235, with different lower limits (Kirkuk 3000 ft AMSL or 1500 ft AGL; Baghdad 1800 ft AMSL or 1000 ft AGL, whichever higher). Both listed H24 in historical AIP. Do NOT apply this APP boundary to FL235–FL460 ACC NORTH/SOUTH control, or infer ownership via geography. Later 19 MAR 2026 Kirkuk TMA 1–9 pages are different sector/TMA geometry; do not replace the shared 2023 APP sector line without verifying applicable current material.
+
+Next requested change: add this **display-only optional APP sector divider** to isolated controller HMI prototype, with an independent toggle and provenance, sharing existing lon/lat projection and Radar Camera. Ensure it remains aligned on pan/zoom/resize and does not affect BlueSky read-only, ACC handover, or aircraft truth. Optional Baghdad↔Ali boundary deferred until independently verified and tested; don't extrapolate it from screenshot.
