@@ -654,3 +654,33 @@ Keep mock mode intact and selectable. Live-mode failure must not corrupt mock da
 
 ### Success criteria
 Run the existing Baghdad scenario in BlueSky and verify that live aircraft move in the HMI prototype while local FPL/CFL/handover state remains stable and separate. No controller command path is enabled yet.
+
+
+## 29. Integration Spike 01 live truth adapter completed — 2026-10-12
+
+Cursor reports the isolated controller HMI prototype read-only BlueSky integration finished on the **local** WebATM working copy:
+
+- Branch: `prototype/controller-hmi-live-truth`
+- Commit: `27fc43d` — `Add read-only BlueSky truth adapter to controller HMI`
+- Changed files **only** inside `prototypes/controller-hmi/`: new `live-bluesky.js`; modified `app.js`, `index.html`, `styles.css`, `mock-flight-plans.json`, `README.md`.
+- Source: existing WebATM Socket.IO endpoint at `http://localhost:8082`, connected from the prototype served at `http://localhost:8765/prototypes/controller-hmi/`.
+- Protocol: reads `initial_data`, `acdata`, `siminfo`, connection status; no prototype `command` emission and no second BlueSky proxy/backend.
+- Units: SI altitude/speeds converted centrally to FL/knots/ft-per-minute; no fabricated Mode-S data.
+- MOCK and LIVE modes selectable; status distinguishes CONNECTING, LIVE, STALE, DISCONNECTED; paused simulation can be stale without socket disconnect.
+- In LIVE, track history derives from received positions rather than synthetic dots.
+- Live aircraft truth does not overwrite local CFL, FPL, handover, selection or dragged label positions.
+
+Cursor reports a full 24-step integration acceptance test passed using the Baghdad scenario: 6 live aircraft, observed 7 acdata/s with ~5 fresh frames/s, update/render capped near 2 fps, FPL correlation/no-FPL cases, handover/CFL state persistence, pause/stop/disconnect, and mock/live switching. A screenshot independently shows the LIVE mode and six aircraft in the prototype; the remaining test outcomes are **Cursor-reported**, not independently retested in this chat.
+
+### Follow-up defects / engineering cautions before write-enabled integration
+
+1. **Mock/live isolation:** Editing or handing over a flight in LIVE currently can leave its mock FPL substate changed after switching back to MOCK. Establish separate cloned/session-scoped controller/FPL state for modes or an explicit state reset/preservation policy.
+2. **Correlation ≠ ownership:** A live aircraft with no FPL correlation must not automatically be shown as owned by another sector. Distinguish uncorrelated surveillance tracks from tracks owned by another controller. The appropriate color must follow a verified local configuration, not an invented fallback.
+3. **Input test gap:** Label dragging in LIVE was tested using synthetic pointer events, not an actual mouse gesture. Test pointer capture, coordinate mapping, drag/click interactions in real browser.
+4. **Startup error test gap:** Browser error capture was installed after page load; startup errors must be observed during a fresh load.
+5. **UI quirks:** Debug FPL dropdown does not refresh after handover; auto-open SIL obscures source-mode debug controls.
+6. **Track lifecycle:** Disappearing track is currently removed immediately (no coast); acceptable as a labelled spike limitation, not as validated surveillance behavior.
+7. **Scenario calibration:** Reported high groundspeeds at cruise need separate scenario/performance review; not proof of an adapter defect.
+8. **Rendering:** Approx. 2 Hz radar redraw remains an initial prototype compromise; tune only after establishing training frame/update requirements.
+
+Recommended next step: small **Integration Spike 01.1 stabilization** confined to the isolated prototype, then decide controlled command interface design (not yet enable BlueSky commands).
