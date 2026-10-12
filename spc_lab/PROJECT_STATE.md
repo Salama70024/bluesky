@@ -684,3 +684,34 @@ Cursor reports a full 24-step integration acceptance test passed using the Baghd
 8. **Rendering:** Approx. 2 Hz radar redraw remains an initial prototype compromise; tune only after establishing training frame/update requirements.
 
 Recommended next step: small **Integration Spike 01.1 stabilization** confined to the isolated prototype, then decide controlled command interface design (not yet enable BlueSky commands).
+
+
+## 30. Verified Baghdad ACC North/South divider and sector ownership — 2026-10-12
+
+**Source verification:** Iraq AIP ENR 2.1-2 (28 NOV 2024, AIRAC AIP AMDT 05/24 in the provided mixed-date AIP PDF `462.pdf`) formally defines Baghdad ACC North/South sectors, both H24 and FL235–FL460. The shared internal lateral boundary, in west→east order, is:
+
+`312325N 0412439E → ANBAR → BABIL → DEBNI → SEPTU → VAXEN → 332610N 0460200E`.
+
+The reverse is shown in the North-sector definition. WGS84 coordinates of intermediate AIP fixes are also listed in the same 2026 AIP compilation:
+- ANBAR N320649 E0422453
+- BABIL N323447 E0430436
+- DEBNI N331014 E0441703
+- SEPTU N331300 E0444400
+- VAXEN N331800 E0451500
+
+Do not treat a hand-drawn yellow screenshot annotation as source geometry. Use the published coordinates and versioned data, rechecking the current effective ENR 2.1 page before claiming present operational validity.
+
+**LATSI 2.8 (Dec 2015), Section III/Chapter 1** states explicitly: Baghdad ACC is split into North and South sectors, lateral boundaries as per Iraq AIP ENR, vertical FL235–FL460, H24. Section III/Chapter 2 states transfer of control coincides with the airspace boundary and transfer of communication should occur before it. Historical procedural baseline only, validate current local rules later.
+
+**Baghdad SSS Rev A (Nov 2014) §§3.5.8.6–3.5.8.6.1, pp.130–131** establishes asymmetric sector-local handover views:
+- upstream controller offers handover of a locally controlled flight;
+- sender views HANDOVER-OUT, receiver views HANDOVER-IN, with visual blinking;
+- receiver's Accept completes transfer; sender may cancel its outstanding offer before acceptance (using Accept again in documented configuration);
+- upon completion the flight becomes controlled in receiving sector and other-sector traffic from sender viewpoint.
+**CP OH Rev K (Nov 2013), §5.2.2.2 pp.58–59** documents default handover flashing for both positions and controlled/uncontrolled colour distinctions. Note that controller-observed white-for-local and blue-for-other is a **local visual reference** and must be validated separately from generic product colour palette/configuration.
+
+**Important architectural rule:** one controller session operates a single assigned sector (ACC NORTH or ACC SOUTH), per project training brief. The same aircraft has one shared `ownerSector` and at most one pending `handoverOffer`, while each client derives its own presentation from `viewpointSector`. Do **not** store independent contradictory ownership values in two browser clients; do not infer control merely from the aircraft's geographic side of the divider. Use geographic sector location to assist exercises, boundary-crossing prompts and instructor validation, not to silently transfer control. Also distinguish UI handover acceptance from procedural transfer-of-control at the airspace boundary.
+
+**Next isolated-prototype task:** restore/display the authentic divider from the AIP vertices, validate it against the chart, use sector-specific label/leader colours and pending handover visualization without any BlueSky write commands. Defer synchronized 2-controller handover until a shared authority/coordination service exists.
+
+**UI note:** `AIRCRAFT SOURCE (DEBUG — READ-ONLY)`, `PROTOTYPE STATE`, and `FLIGHT DATA DEBUG` are temporary developer/instructor tools. They must not permanently obscure the controller radar map. Move to a collapsible debug drawer/panel or hide by default behind `?debug=1` while preserving MOCK/LIVE selection and test harness usability. Final controller workspace must not expose debug controls.
