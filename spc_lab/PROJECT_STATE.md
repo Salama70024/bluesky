@@ -818,3 +818,26 @@ Cursor reports local WebATM prototype commit `a984bfc3e1bf3aa671220954e143ec10c1
 Specifically, Cursor measured the eastern Kirkuk/Baghdad APP endpoint `342936N 0453144E` as ~1.92 NM outside the current approximate FIR trace (nearest traced coordinate ~45.4931 E / 34.5056 N). This is a discrepancy between independently sourced boundary representations, not a proven projection/camera failure. The other user's image shows another apparent mismatch close to MURIB for Baghdad/Ali; **its exact distance and cause have not been independently measured**, so retain as a separate open geodata QA item. Establish authoritative, effective-dated AIP FIR vector/coordinate topology later; recheck ENR/AIRAC source configuration before operational interpretation. Keep 'training/not for navigation' designation.
 
 **Next goal prioritized over micro-adjusting map:** move from a same-browser `BroadcastChannel` two-controller demonstration toward actual North/South training positions with one shared server-authoritative ownership/handover state. First inspect the available WebATM/BlueSky integration and choose a minimal separately testable training coordination service, without modifying aircraft dynamics or sending commands to BlueSky. Target two independent browsers/computers, controller-specific sector roles, server-owned ownerSector/pendingOffer, offer/accept/cancel with revision/idempotency, connection recovery/status, MOCK/LIVE session isolation, neutral unknown/unassigned state rather than forged ownership, and compatibility with current read-only truth feed. Do not claim BroadcastChannel is suitable for cross-machine operation. Later build instructor scenario authoring and control on that foundation.
+
+
+## 38. Authoritative two-controller training coordination service — 2026-10-12
+
+User-supplied Cursor report: **Coordination Service 01** is implemented locally in WebATM prototype, commit `e9348a2252efa369a1d3da3bc9439526fd17e90e`. The local branch name was not included in this report; avoid assuming until checked.
+
+Architecture:
+- isolated `training-service/` Express + Socket.IO coordination service on port 8091, with `src/session-store.js` authoritative for sector ownership/pending handover, revisions, presence and MOCK/LIVE session isolation;
+- client `prototypes/controller-hmi/handover-coord-server.js` enables server transport for `?role=north|south&coord=1`, and `handover-coord.js` preserves `coordTransport=bc` as optional same-browser transport;
+- separate read-only live aircraft truth from WebATM/BlueSky :8082; **coordination service does not control flight dynamics or issue BlueSky commands**;
+- server authoritative `ownerSector` and pending offers; clients consume `coord:state` / join snapshots; local camera/selection remain private;
+- reconnect snapshot/revision and duplicate/conflicting action handling.
+
+Cursor reports `cd training-service && npm test`: **12/12 passed** (offer/pending/accept, reverse/cancel, duplicate/revision/authorization, reconnect, MOCK/LIVE isolation, uniqueness), and `GET /health` OK during a smoke test. **These results are Cursor-reported, not independently rerun in this chat.** Manual two-browser and especially two-PC UI acceptance remains pending.
+
+Operational/architecture cautions before LAN availability or instructor deployment:
+- Coordination state is in-memory; verify server restart behavior, deterministic scenario-specific initialization, reconnect, and explicit unassigned/unsynchronized state.
+- URL `role=north|south` is not proven authentication. Verify sector assignment and authorization server-side; prevent two controller clients from silently claiming the same position. Distinguish protocol authorization tests from real authentication/authorization.
+- `localhost:8091` in a client URL on another PC would resolve to that PC, not the host. Configure a reachable host and private-network/firewall restrictions. Do not expose the entire repo root via an unauthenticated static server across the LAN, which may reveal source/.git/local secrets.
+- Validate live HMI two-position interaction, selection/context menus, pending visual states, transport reconnect and service restart. Do not infer multi-PC acceptance from backend tests.
+- Diagram refinement: browser controllers individually consume read-only WebATM truth and separately connect to training-service ownership; do not imply the coordination service necessarily proxies WebATM data.
+
+**Immediate next step:** hands-on same-PC two-tab validation (then controlled LAN two-PC validation after server exposure/access/security reviewed). Do not start write-to-BlueSky clearance integration before that acceptance milestone.
