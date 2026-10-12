@@ -715,3 +715,22 @@ Do not treat a hand-drawn yellow screenshot annotation as source geometry. Use t
 **Next isolated-prototype task:** restore/display the authentic divider from the AIP vertices, validate it against the chart, use sector-specific label/leader colours and pending handover visualization without any BlueSky write commands. Defer synchronized 2-controller handover until a shared authority/coordination service exists.
 
 **UI note:** `AIRCRAFT SOURCE (DEBUG — READ-ONLY)`, `PROTOTYPE STATE`, and `FLIGHT DATA DEBUG` are temporary developer/instructor tools. They must not permanently obscure the controller radar map. Move to a collapsible debug drawer/panel or hide by default behind `?debug=1` while preserving MOCK/LIVE selection and test harness usability. Final controller workspace must not expose debug controls.
+
+
+## 31. Sector Foundation 01 implementation — reported 2026-10-12
+
+Cursor reports isolated WebATM controller-HMI prototype milestone:
+- Local branch: `prototype/controller-hmi-live-truth`
+- Local commit: `e79eba0` — `Add Baghdad ACC North/South sector foundation`
+- Modified only `prototypes/controller-hmi/`: new `baghdad-acc-sectors.json`; `app.js`, `index.html`, `styles.css`, `regression-harness.js`, `README.md`.
+- North/South divider from Iraq AIP ENR 2.1-2 (28 NOV 2024), endpoints `312325N 0412439E` and `332610N 0460200E`, following ANBAR → BABIL → DEBNI → SEPTU → VAXEN. Intermediate fixes cross-checked against AIP ENR 4.4-derived aviation GeoJSON, reportedly 0 mismatches.
+- Shared map geographic projection used for divider; source metadata preserved.
+- Sector viewpoint / owner sector / handover source-target / correlation / aircraft location kept distinct; no automatic ownership from location.
+- Controller colors: local white, other-sector blue, pending handover flashing white/gray, uncorrelated neutral; STCA red preserved.
+- Prototype debug tools hidden by default, enabled via `?debug=1`, draggable/collapsible; viewpoint stays on controller chrome.
+- Cursor reports regression suite 10/10 passing and no JavaScript errors. These are Cursor-reported local checks; this chat has not independently inspected the unpublished local commit.
+- Remaining limits: line only (no sector polygons); no shared cross-browser handover state; APP/KIRKUK/ALI sector view options lack complete AIP boundaries; no BlueSky writes.
+
+### Next recommended increment: cross-tab handover interaction spike
+
+Test two simultaneous controller viewpoints on a single machine, each controlling just ACC NORTH or ACC SOUTH, with shared HMI-only sector ownership and pending handover. Keep BlueSky live truth read-only. A lightweight browser BroadcastChannel transport can be used as an **explicitly temporary same-origin/same-browser-profile prototype transport**, not as a distributed training-system authority. Avoid changing production WebATM. Later replace transport with authoritative server-side coordination for multiple training workstations. Validate manual offer/accept/cancel, both views updating coherently, one owner per aircraft and no automatic transfer merely from geographic boundary crossing. Keep controller visual states context-specific and avoid cross-mode (MOCK/LIVE) data leakage.
