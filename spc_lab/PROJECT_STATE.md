@@ -790,3 +790,22 @@ After the isolated HMI prototype APP boundary implementation, Cursor reported co
 - Preserve published geographic coordinates and independent ACC/APP visibility, and avoid changes to BlueSky, camera, FPL, ownership/handover.
 
 Implement as shared visual design token (e.g., `--radar-boundary-color`) and distinct CSS stroke-dasharray for APP. For SVG camera zoom, preserve visually consistent stroke width/dash rhythm where appropriate (`vector-effect: non-scaling-stroke` after verifying it does not damage overlays). Re-run baseline 12 tests and camera zoom tests. No geographic or operational behavior changes.
+
+
+## 36. APP divider topology validation and Baghdad/Ali boundary — 2026-10-12
+
+User supplied zoomed-in screenshots after Kirkuk/Baghdad APP divider and boundary styling updates. Two issues:
+1. East endpoint of the Kirkuk↔Baghdad APP dashed divider appears slightly **outside the existing drawn FIR outline near SOBIL**.
+2. Baghdad↔Ali APP sector divider is not yet rendered dashed. It was explicitly excluded from earlier Kirkuk-only implementation, so do not mistake the existing solid ACC North/South divider or an airway for the APP Baghdad/Ali boundary.
+
+Checked supplied `462.pdf` text directly:
+- Iraq AIP **ENR 2.1-1 (23 FEB 2023)** p.47 Kirkuk↔Baghdad APP shared divider:
+  `344655N 0411325E` → `343054N 0414705E` → `342936N 0453144E`.
+  East point **34.49333333 N, 45.52888889 E** described as on the border with TEHRAN FIR.
+- ENR 2.1-1 p.47 and ENR 2.1-2 (28 NOV 2024) p.48 Baghdad↔Ali APP shared divider:
+  west `310518N 0415948E` → mid `321420N 0444816E` → east `331015N 0461135E`;
+  corresponding GeoJSON `[lon,lat]`:
+  `[[41.99666667,31.08833333],[44.80444444,32.23888889],[46.19305556,33.17083333]]`.
+- Apparent Kirkuk/Baghdad end-point mismatch could be **historical AIP published point versus approximate chart-traced FIR polygon** or projection/overlay issue. Must be numerically measured and diagnosed in local code, not fixed by silently shortening/clipping APP segment, snapping AIP coordinate to traced border, or stretching screen display. Keep provenance, distinguish source/accuracy conflict, and report outcome.
+- APP sector dividers should use shared muted-green radar boundary token + dashed stroke. ACC North/South and outer FIR remain solid muted green. APP under FL235; no changes to ACC ownership/handover, aircraft truth or BlueSky write path.
+- Next targeted Cursor task: add Baghdad/Ali three-vertex line in separate APP sector dataset/layer, verify exact coordinates and projection, investigate FIR mismatch numerically, modify boundary geometry only if supported by authoritative source and after verifying no other conflicts. Re-run overlay toggles, camera pan/zoom, two-controller and LIVE read-only regression.
